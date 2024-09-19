@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BarcodeScanner from "./ui/barcode-scanner";
+import { BarcodeScanner } from "./ui/barcode-scanner";
 
 export default function Home() {
   return (

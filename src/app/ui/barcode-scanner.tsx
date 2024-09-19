@@ -1,42 +1,21 @@
-"use client";
-
-// @ts-ignore
-import Quagga from "quagga";
 import { useState } from "react";
+import { useZxing } from "react-zxing";
 
-export default function BarcodeScanner() {
-  const [scannedCode, setScannedCode] = useState(null);
-  const startScanner = () => {
-    Quagga.init(
-      {
-        inputStream: {
-          type: "LiveStream",
-          constraints: {
-            facingMode: "environment",
-          },
-        },
-        decoder: {
-          readers: ["code_128_reader"],
-        },
-      },
-      (err: any) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        Quagga.start();
-      }
-    );
+export const BarcodeScanner = () => {
+  const [result, setResult] = useState("");
+  const { ref } = useZxing({
+    onDecodeResult(result) {
+      setResult(result.getText());
+    },
+  });
 
-    Quagga.onDetected((data: any) => {
-      setScannedCode(data.codeResult.code);
-      Quagga.stop();
-    });
-  };
   return (
-    <div>
-      <button onClick={startScanner}>Start Barcode Scanner</button>
-      {scannedCode && <p>Scanned Code: {scannedCode}</p>}
-    </div>
+    <>
+      <video ref={ref} />
+      <p>
+        <span>Last result:</span>
+        <span>{result}</span>
+      </p>
+    </>
   );
-}
+};
