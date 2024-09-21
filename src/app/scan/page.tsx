@@ -1,5 +1,7 @@
 import { BarcodeScanner } from "../ui/barcode-scanner";
 
-export default function Page() {
-  return <BarcodeScanner />;
+export default async function Page({ query }: { query: string }) {
+  return (
+    <>{query ? <div>I got: {query} to fetch...</div> : <BarcodeScanner />}</>
+  );
 }
