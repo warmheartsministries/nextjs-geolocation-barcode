@@ -58,6 +58,18 @@ export default function Home() {
             SCAN
           </Link>
         </div>
+        <br />
+        <br />
+        <br />
+        <div>
+          <Link
+            href={{
+              pathname: "/seed",
+            }}
+          >
+            SEED
+          </Link>
+        </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a
