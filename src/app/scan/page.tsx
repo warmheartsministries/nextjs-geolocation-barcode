@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { BarcodeScanner } from "../ui/barcode-scanner";
+import ProductDetails from "../ui/product-details";
 
 export default async function Page({ searchParams }: { searchParams: string }) {
   const query = searchParams || "";
@@ -8,7 +10,9 @@ export default async function Page({ searchParams }: { searchParams: string }) {
   return (
     <>
       {qKey && qValue ? (
-        <div>I got: {qValue} to fetch...</div>
+        <Suspense>
+          <ProductDetails upc={qValue} />
+        </Suspense>
       ) : (
         <BarcodeScanner />
       )}
