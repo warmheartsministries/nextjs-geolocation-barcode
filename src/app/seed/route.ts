@@ -35,11 +35,11 @@ async function seedProducts() {
   await client.sql`
        CREATE TABLE IF NOT EXISTS products (
          id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-         upc VARCHAR(255) NOT NULL,
+         upc TEXT NOT NULL,
          brand TEXT NOT NULL,
          decription TEXT NOT NULL,
          img_url TEXT NOT NULL,
-         price TEXT NOT NULL,
+         price TEXT NOT NULL
        );
      `;
 
