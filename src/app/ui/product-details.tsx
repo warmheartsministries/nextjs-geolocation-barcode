@@ -8,7 +8,7 @@ export default async function ProductDetails(props: { upc: string }) {
       <div>PRODUCT DETAILS FOR UPC: {props.upc}</div>
       <div>
         {data?.map((product: Product) => (
-          <div>
+          <div key={product.id}>
             <div>{product.id}</div>
             <div>{product.upc}</div>
             <div>{product.brand}</div>
