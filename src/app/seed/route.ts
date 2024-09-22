@@ -73,7 +73,7 @@ async function seedOrders() {
   const insertedOrders = await Promise.all(
     orders.map(
       (order) => client.sql`
-         INSERT INTO invoices (customer_id, amount, status, date)
+         INSERT INTO orders (customer_id, amount, status, date)
          VALUES (${order.customer_id}, ${order.amount}, ${order.status}, ${order.date})
          ON CONFLICT (id) DO NOTHING;
        `
