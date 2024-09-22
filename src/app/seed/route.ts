@@ -1,10 +1,11 @@
-import bcrypt from "bcrypt";
+//import bcrypt from "bcrypt";
 import { db } from "@vercel/postgres";
-import { customers, products } from "../lib/placeholder-data";
+//import { customers, products, orders } from "../lib/placeholder-data";
+import { orders } from "../lib/placeholder-data";
 
 const client = await db.connect();
 
-async function seedCustomers() {
+/*async function seedCustomers() {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await client.sql`
      CREATE TABLE IF NOT EXISTS customers (
@@ -54,13 +55,40 @@ async function seedProducts() {
   );
 
   return insertedProducts;
+}*/
+
+async function seedOrders() {
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await client.sql`
+     CREATE TABLE IF NOT EXISTS orders (
+       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+       customer_id UUID NOT NULL,
+       amount INT NOT NULL,
+       status VARCHAR(255) NOT NULL,
+       date DATE NOT NULL
+     );
+   `;
+
+  const insertedOrders = await Promise.all(
+    orders.map(
+      (order) => client.sql`
+         INSERT INTO invoices (customer_id, amount, status, date)
+         VALUES (${order.customer_id}, ${order.amount}, ${order.status}, ${order.date})
+         ON CONFLICT (id) DO NOTHING;
+       `
+    )
+  );
+
+  return insertedOrders;
 }
 
 export async function GET() {
   try {
     await client.sql`BEGIN`;
-    await seedCustomers();
-    await seedProducts();
+    //await seedCustomers();
+    //await seedProducts();
+    await seedOrders();
     await client.sql`COMMIT`;
 
     return Response.json({ message: "Database seeded successfully" });
